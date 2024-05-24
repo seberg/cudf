@@ -174,6 +174,7 @@ def _is_scalar_or_zero_d_array(val):
     bool
         Return True if given object is scalar.
     """
+    # TODO: If NumPy>2, this is just a check for int, float, complex
     return (
         isinstance(val, (np.ndarray, cp.ndarray)) and val.ndim == 0
     ) or is_scalar(val)

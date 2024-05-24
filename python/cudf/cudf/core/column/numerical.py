@@ -293,7 +293,15 @@ class NumericalColumn(NumericalBaseColumn):
                 return other
             # expensive device-host transfer just to
             # adjust the dtype
-            other = other.value
+            #if np.lib.NumpyVersion(np.__version__) >= "2.0.0rc1":
+            #    if other.dtype.kind in {"b", "i", "u", "f"}:
+            #        return other
+            #    return NotImplemented
+            other = other.value.item()  # TODO, eeek?
+        elif is_scalar(other):
+            # TODO: Just an awful hack...
+            other = np.array(other).item()
+
         # Try and match pandas and hence numpy. Deduce the common
         # dtype via the _value_ of other, and the dtype of self. TODO:
         # When NEP50 is accepted, this might want changed or
