@@ -986,9 +986,8 @@ def test_numeric_series_replace_dtype(series_dtype, replacement):
     sr = cudf.from_pandas(psr)
 
     if sr.dtype.kind in "ui":
-        can_replace = np.array([replacement])[0].is_integer() and np.can_cast(
-            int(replacement), sr.dtype
-        )
+        numpy_scalar = np.array([replacement])[0]
+        can_replace = numpy_scalar.is_integer() and numpy_scalar == replacement
     else:
         can_replace = np.can_cast(replacement, sr.dtype)
 
