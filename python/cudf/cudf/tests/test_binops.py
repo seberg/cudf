@@ -540,7 +540,14 @@ def test_series_reflected_ops_scalar(func, dtype, obj_class):
     if obj_class == "Index":
         gs = as_index(gs)
 
-    gs_result = func(gs)
+    try:
+        gs_result = func(gs)
+    except OverflowError:
+        # An error is fine, if pandas raises the same error:
+        with pytest.raises(OverflowError):
+            func(random_series)
+
+        return
 
     # class typing
     if obj_class == "Index":
@@ -590,7 +597,14 @@ def test_series_reflected_ops_cudf_scalar(funcs, dtype, obj_class):
     if obj_class == "Index":
         gs = as_index(gs)
 
-    gs_result = gpu_func(gs)
+    try:
+        gs_result = gpu_func(gs)
+    except OverflowError:
+        # An error is fine, if pandas raises the same error:
+        with pytest.raises(OverflowError):
+            cpu_func(random_series)
+
+        return
 
     # class typing
     if obj_class == "Index":
