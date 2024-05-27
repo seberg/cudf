@@ -259,6 +259,7 @@ def to_cudf_compatible_scalar(val, dtype=None):
             # pd.Timestamp can handle str, but not np.str_
             val = pd.Timestamp(str(val)).to_datetime64().astype(dtype)
         else:
+            # At least datetimes cannot be converted to scalar via dtype.type:
             val = np.array(val, dtype)[()]
     else:
         val = _maybe_convert_to_default_type(
