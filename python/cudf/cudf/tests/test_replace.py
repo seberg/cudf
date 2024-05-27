@@ -829,7 +829,12 @@ def test_series_where(data_dtype, fill_value):
     psr = pd.Series(list(range(10)), dtype=data_dtype)
     sr = cudf.from_pandas(psr)
 
-    if sr.dtype.type(fill_value) != fill_value:
+    try:
+        scalar_fits = sr.dtype.type(fill_value) == fill_value
+    except TypeError:
+        scalar_fits = False
+
+    if not scalar_fits:
         with pytest.raises(TypeError):
             sr.where(sr > 0, fill_value)
     else:
@@ -843,7 +848,7 @@ def test_series_where(data_dtype, fill_value):
             check_dtype=expect.dtype.kind not in ("f"),
         )
 
-    if sr.dtype.type(fill_value) != fill_value:
+    if not scalar_fits:
         with pytest.raises(TypeError):
             sr.where(sr < 0, fill_value)
     else:
@@ -856,7 +861,7 @@ def test_series_where(data_dtype, fill_value):
             check_dtype=expect.dtype.kind not in ("f"),
         )
 
-    if sr.dtype.type(fill_value) != fill_value:
+    if not scalar_fits:
         with pytest.raises(TypeError):
             sr.where(sr == 0, fill_value)
     else:
