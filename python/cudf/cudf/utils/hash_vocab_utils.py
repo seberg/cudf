@@ -7,8 +7,8 @@ PRIME = np.uint64(281474976710677)
 
 # Coefficients ranges for inner hash - This are important to set to be
 # large so that we have randomness in the bottom bits when modding
-A_SECOND_LEVEL_POW = np.uint8(48)
-B_SECOND_LEVEL_POW = np.uint8(7)
+A_SECOND_LEVEL_POW = 48
+B_SECOND_LEVEL_POW = 7
 
 A_LBOUND_SECOND_LEVEL_HASH = 2**16
 A_HBOUND_SECOND_LEVEL_HASH = 2**A_SECOND_LEVEL_POW
@@ -23,11 +23,10 @@ MAX_SIZE_FOR_INITIAL_BIN = 2**8 - 1
 
 
 # Shifts for bit packing
-A_SECOND_LEVEL_SHIFT_AMT = np.uint8(64 - A_SECOND_LEVEL_POW)
-B_SECOND_LEVEL_SHIFT_AMT = np.uint8(
-    64 - A_SECOND_LEVEL_POW - B_SECOND_LEVEL_POW
-)
-BITS_FOR_INNER_TABLE_SIZE = np.uint8(8)
+A_SECOND_LEVEL_SHIFT_AMT = 64 - A_SECOND_LEVEL_POW
+B_SECOND_LEVEL_SHIFT_AMT = 64 - A_SECOND_LEVEL_POW - B_SECOND_LEVEL_POW
+assert B_SECOND_LEVEL_SHIFT_AMT > 0  # was a uint8 so assume this must be true
+BITS_FOR_INNER_TABLE_SIZE = 8
 
 NOT_FOUND = -1
 
