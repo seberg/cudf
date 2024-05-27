@@ -833,11 +833,11 @@ def test_series_where(data_dtype, fill_value, op):
 
     try:
         scalar_fits = sr.dtype.type(fill_value) == fill_value
-    except TypeError:
+    except OverflowError:
         scalar_fits = False
 
     if not scalar_fits:
-        with pytest.raises((TypeError, OverflowError)):
+        with pytest.raises(TypeError):
             sr.where(op(sr, 0), fill_value)
     else:
         # Cast back to original dtype as pandas automatically upcasts
